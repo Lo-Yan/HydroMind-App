@@ -1,3 +1,8 @@
+/*
+this is the onboarding screen that look like traffic light. 
+when the user swipe left/ right, they can see the different traffic light 
+*/
+
 import 'package:flutter/material.dart';
 import 'size_config.dart';
 import 'onboarding_contents.dart';

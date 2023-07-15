@@ -1,3 +1,7 @@
+/*
+this is the introduction screen with hydromind logo when the user first opens the app
+*/
+
 import 'package:flutter/material.dart';
 import 'home_screen.dart';
 import 'onboarding_screen.dart';
