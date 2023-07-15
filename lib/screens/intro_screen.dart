@@ -63,7 +63,7 @@ class _IntroScreenState extends State<IntroScreen> with SingleTickerProviderStat
           child: Container(
             width: 300,
             height: 300,
-            child: Image.asset('assets/HydroMindLogo.png'), // Replace with your logo image asset
+            child: Image.asset('assets/HydroMindLogo.png'), 
           ),
         ),
       ),

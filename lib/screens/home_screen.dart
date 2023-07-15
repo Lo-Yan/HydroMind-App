@@ -13,8 +13,16 @@ class HomeScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Home Screen'),
+        title: Text(
+          'Dashboard',
+          style: TextStyle(
+            color: Colors.white,
+            fontSize: 24, // Increase the font size of the title
+          ),
+        ),
+        centerTitle: true, // Center align the title
         automaticallyImplyLeading: false, // Add this line to remove the back button
+        backgroundColor: Colors.black, // Set the background color to black
       ),
       body: Center(
         child: Column(
