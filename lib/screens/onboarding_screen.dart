@@ -6,7 +6,7 @@ when the user swipe left/ right, they can see the different traffic light
 import 'package:flutter/material.dart';
 import 'size_config.dart';
 import 'onboarding_contents.dart';
-import 'home_screen.dart';
+import 'bottom_nav_bar.dart';
 
 class OnboardingScreen extends StatefulWidget {
   const OnboardingScreen({Key? key}) : super(key: key);
@@ -50,7 +50,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
   void navigateToHomeScreen() {
     Navigator.push(
       context,
-      MaterialPageRoute(builder: (context) => HomeScreen()),
+      MaterialPageRoute(builder: (context) => BottomNavBar()),
     );
   }
 
