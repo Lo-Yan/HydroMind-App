@@ -2,7 +2,14 @@ import 'package:flutter/material.dart';
 import 'home_screen.dart';
 
 class GoalsScreen extends StatelessWidget {
-  const GoalsScreen({Key? key});
+  final void Function(bool, String)? onConfirmationChanged;
+  final String selectedGoal;
+
+  const GoalsScreen({
+    Key? key,
+    required this.onConfirmationChanged,
+    required this.selectedGoal,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -39,7 +46,7 @@ class GoalsScreen extends StatelessWidget {
   Widget _buildGoalBox(String imagePath, String description, BuildContext context) {
     return InkWell(
       onTap: () {
-        _showConfirmationDialog(context);
+        _showConfirmationDialog(context, description);
       },
       child: Container(
         width: double.infinity,
@@ -79,7 +86,7 @@ class GoalsScreen extends StatelessWidget {
     );
   }
 
-  void _showConfirmationDialog(BuildContext context) {
+  void _showConfirmationDialog(BuildContext context, String goal) {
     showDialog(
       context: context,
       builder: (context) {
@@ -90,10 +97,15 @@ class GoalsScreen extends StatelessWidget {
             TextButton(
               onPressed: () {
                 Navigator.pop(context); // Close the dialog
+                if (onConfirmationChanged != null) {
+                  onConfirmationChanged!(true, goal); // Notify the callback function in HomeScreen
+                }
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => const HomeScreen(),
+                    builder: (context) => HomeScreen(
+                      selectedGoal: goal, // Pass the selected goal description back to HomeScreen
+                    ),
                   ),
                 );
               },

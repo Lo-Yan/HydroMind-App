@@ -12,7 +12,7 @@ class BottomNavBar extends StatefulWidget {
 class _BottomNavBarState extends State<BottomNavBar> {
   int _currentIndex = 0;
   final List<Widget> _screens = [
-    HomeScreen(),
+    HomeScreen(selectedGoal: ''),
     ProfileScreen(),
   ];
 
@@ -27,9 +27,9 @@ class _BottomNavBarState extends State<BottomNavBar> {
             _currentIndex = index;
           });
         },
-        backgroundColor: Colors.black, // Set the background color to black
-        selectedItemColor: Colors.white, // Set the selected item color to white
-        unselectedItemColor: Colors.grey, // Set the unselected item color to grey
+        backgroundColor: Colors.black,
+        selectedItemColor: Colors.white,
+        unselectedItemColor: Colors.grey,
         items: const [
           BottomNavigationBarItem(
             icon: Icon(Icons.home),

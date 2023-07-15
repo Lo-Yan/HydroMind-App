@@ -1,56 +1,176 @@
-/*
-This is the homepage screen where the user will be directed to after choosing their profile.
-*/
-
 import 'package:flutter/material.dart';
 import 'goals_screen.dart';
-import 'your_water_usage_screen.dart';
 
-class HomeScreen extends StatelessWidget {
-  const HomeScreen({Key? key});
+class HomeScreen extends StatefulWidget {
+  final String selectedGoal;
+
+  const HomeScreen({Key? key, required this.selectedGoal}) : super(key: key);
+
+  @override
+  State<HomeScreen> createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
+  String selectedGoal = '';
+
+  void updateGoalConfirmation(bool confirmed, String goal) {
+    if (confirmed) {
+      setState(() {
+        selectedGoal = goal;
+      });
+    }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    selectedGoal = widget.selectedGoal;
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(
+        title: const Text(
           'Dashboard',
           style: TextStyle(
             color: Colors.white,
-            fontSize: 24, // Increase the font size of the title
+            fontSize: 24,
           ),
         ),
-        centerTitle: true, // Center align the title
-        automaticallyImplyLeading: false, // Add this line to remove the back button
-        backgroundColor: Colors.black, // Set the background color to black
+        centerTitle: true,
+        automaticallyImplyLeading: false,
+        backgroundColor: Colors.black,
       ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            ElevatedButton(
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => const GoalsScreen(),
+      body: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 16.0),
+        child: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              selectedGoal.isNotEmpty
+                  ? ElevatedButton(
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => GoalsScreen(
+                              onConfirmationChanged: updateGoalConfirmation,
+                              selectedGoal: selectedGoal,
+                            ),
+                          ),
+                        );
+                      },
+                      child: Column(
+                        children: [
+                          SizedBox(
+                            width: 120,
+                            height: 120,
+                            child: Image.asset(
+                              'assets/images/target.png',
+                              fit: BoxFit.cover,
+                            ),
+                          ),
+                          const SizedBox(height: 8),
+                          Text(
+                            'Go to Goals Screen ($selectedGoal)',
+                            style: const TextStyle(fontSize: 18),
+                          ),
+                        ],
+                      ),
+                      style: ElevatedButton.styleFrom(
+                        primary: Colors.amberAccent,
+                        onPrimary: Colors.white,
+                        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                      ),
+                    )
+                  : GoalsButton(
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => GoalsScreen(
+                              onConfirmationChanged: updateGoalConfirmation,
+                              selectedGoal: selectedGoal,
+                            ),
+                          ),
+                        );
+                      },
+                    ),
+              const SizedBox(height: 16),
+              ElevatedButton(
+                onPressed: () {
+                  // Your code for navigating to the Water Usage Screen
+                },
+                child: Column(
+                  children: [
+                    SizedBox(
+                      width: 120,
+                      height: 120,
+                      child: Image.asset(
+                        'assets/images/shower.png',
+                        fit: BoxFit.cover,
+                      ),
+                    ),
+                    const SizedBox(height: 8),
+                    const Text(
+                      'Go to Water Usage Screen',
+                      style: TextStyle(fontSize: 18),
+                    ),
+                  ],
+                ),
+                style: ElevatedButton.styleFrom(
+                  primary: Colors.blue,
+                  onPrimary: Colors.white,
+                  padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10),
                   ),
-                );
-              },
-              child: const Text('Go to Goals Screen'),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class GoalsButton extends StatelessWidget {
+  final VoidCallback onPressed;
+
+  const GoalsButton({Key? key, required this.onPressed}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return ElevatedButton(
+      onPressed: onPressed,
+      child: Column(
+        children: [
+          SizedBox(
+            width: 120,
+            height: 120,
+            child: Image.asset(
+              'assets/images/target.png',
+              fit: BoxFit.cover,
             ),
-            ElevatedButton(
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => const YourWaterUsageScreen(),
-                  ),
-                );
-              },
-              child: const Text('Go to Your Water Usage Screen'),
-            ),
-          ],
+          ),
+          const SizedBox(height: 8),
+          const Text(
+            'Go to Goals Screen',
+            style: TextStyle(fontSize: 18),
+          ),
+        ],
+      ),
+      style: ElevatedButton.styleFrom(
+        primary: Colors.amberAccent,
+        onPrimary: Colors.white,
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(10),
         ),
       ),
     );
