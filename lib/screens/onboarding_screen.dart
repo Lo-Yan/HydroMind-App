@@ -4,9 +4,10 @@ when the user swipe left/ right, they can see the different traffic light
 */
 
 import 'package:flutter/material.dart';
-import 'size_config.dart';
-import 'onboarding_contents.dart';
 import 'bottom_nav_bar.dart';
+import 'home_screen.dart';
+import 'onboarding_contents.dart';
+import 'size_config.dart';
 
 class OnboardingScreen extends StatefulWidget {
   const OnboardingScreen({Key? key}) : super(key: key);
@@ -51,6 +52,13 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
     Navigator.push(
       context,
       MaterialPageRoute(builder: (context) => BottomNavBar()),
+    );
+  }
+
+  void skipOnboarding() {
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(builder: (context) => HomeScreen()),
     );
   }
 
@@ -116,7 +124,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                       ? Padding(
                           padding: const EdgeInsets.all(30),
                           child: ElevatedButton(
-                            onPressed: navigateToHomeScreen, // Navigate to HomeScreen
+                            onPressed: navigateToHomeScreen,
                             child: const Text(
                               "START",
                               style: TextStyle(color: Colors.white),
@@ -138,9 +146,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               TextButton(
-                                onPressed: () {
-                                  _controller.jumpToPage(2);
-                                },
+                                onPressed: skipOnboarding, // Skip to HomeScreen
                                 child: const Text(
                                   "SKIP",
                                   style: TextStyle(color: Colors.black),
