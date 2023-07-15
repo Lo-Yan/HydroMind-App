@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'goals_screen.dart';
+import 'your_water_usage_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   final String selectedGoal;
@@ -103,7 +104,12 @@ class _HomeScreenState extends State<HomeScreen> {
               const SizedBox(height: 16),
               ElevatedButton(
                 onPressed: () {
-                  // Your code for navigating to the Water Usage Screen
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => YourWaterUsageScreen(),
+                    ),
+                  );
                 },
                 child: Column(
                   children: [
