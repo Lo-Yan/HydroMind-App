@@ -1,5 +1,10 @@
+/*
+This is the homepage screen where the user will be directed to after choosing their profile.
+*/
+
 import 'package:flutter/material.dart';
-import 'detail_screen.dart';
+import 'goals_screen.dart';
+import 'your_water_usage_screen.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({Key? key});
@@ -12,16 +17,32 @@ class HomeScreen extends StatelessWidget {
         automaticallyImplyLeading: false, // Add this line to remove the back button
       ),
       body: Center(
-        child: ElevatedButton(
-          onPressed: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => const DetailScreen(),
-              ),
-            );
-          },
-          child: const Text('Go to Detail Screen'),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            ElevatedButton(
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const GoalsScreen(),
+                  ),
+                );
+              },
+              child: const Text('Go to Goals Screen'),
+            ),
+            ElevatedButton(
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const YourWaterUsageScreen(),
+                  ),
+                );
+              },
+              child: const Text('Go to Your Water Usage Screen'),
+            ),
+          ],
         ),
       ),
     );
