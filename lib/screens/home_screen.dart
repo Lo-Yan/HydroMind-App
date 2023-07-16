@@ -36,7 +36,7 @@ class _HomeScreenState extends State<HomeScreen> {
           'Dashboard',
           style: TextStyle(
             color: Colors.white,
-            fontSize: 24,
+            fontSize: 30,
           ),
         ),
         centerTitle: true,
@@ -74,8 +74,8 @@ class _HomeScreenState extends State<HomeScreen> {
                           ),
                           const SizedBox(height: 8),
                           Text(
-                            'Go to Goals Screen ($selectedGoal)',
-                            style: const TextStyle(fontSize: 18),
+                            'Your Goals: ($selectedGoal)',
+                            style: const TextStyle(fontSize: 24),
                           ),
                         ],
                       ),
@@ -123,8 +123,8 @@ class _HomeScreenState extends State<HomeScreen> {
                     ),
                     const SizedBox(height: 8),
                     const Text(
-                      'Go to Water Usage Screen',
-                      style: TextStyle(fontSize: 18),
+                      'Your Water Usage',
+                      style: TextStyle(fontSize: 24),
                     ),
                   ],
                 ),
@@ -167,7 +167,7 @@ class GoalsButton extends StatelessWidget {
           const SizedBox(height: 8),
           const Text(
             'Go to Goals Screen',
-            style: TextStyle(fontSize: 18),
+            style: TextStyle(fontSize: 24),
           ),
         ],
       ),
