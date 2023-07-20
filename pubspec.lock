@@ -197,10 +197,10 @@ packages:
     dependency: "direct main"
     description:
       name: fl_chart
-      sha256: c1e26c7e48496be85104c16c040950b0436674cdf0737f3f6e95511b2529b592
+      sha256: "0cc8f51e421f2a2113ea437a3c9c618e2dfec1c261fb177d433cc3573ba9bb91"
       url: "https://pub.dev"
     source: hosted
-    version: "0.63.0"
+    version: "0.40.6"
   flutter:
     dependency: "direct main"
     description: flutter
