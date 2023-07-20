@@ -11,12 +11,12 @@ class YourWaterUsageScreen extends StatefulWidget {
 
 class _YourWaterUsageScreenState extends State<YourWaterUsageScreen> {
   int _selectedIndex = 0;
-  final List<int> waterUsage = List.generate(7, (_) => Random().nextInt(21) + 30);
+  final List<int> waterUsage = List.generate(7, (_) => Random().nextInt(10) + 40);
 
   // Linear regression model
   double predictNextDayConsumption(List<int> data) {
     double average = calculateAverage(data);
-    return average * 0.9; // Adjust the multiplier to 0.9 for the recommendation.
+    return average * 0.95; // Adjust the multiplier to 0.9 for the recommendation.
   }
 
   double calculateAverage(List<int> data) {
@@ -29,6 +29,7 @@ class _YourWaterUsageScreenState extends State<YourWaterUsageScreen> {
       _selectedIndex = index;
     });
   }
+
 
   @override
   Widget build(BuildContext context) {
@@ -106,18 +107,18 @@ class _YourWaterUsageScreenState extends State<YourWaterUsageScreen> {
                         const SizedBox(height: 16), // Add some spacing
                         const Text(
                           'Recommended Water Usage for Next Day',
-                          style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                          style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.red),
                         ),
                         Text(
                           '${predictNextDayConsumption(waterUsage).toStringAsFixed(1)} liters',
-                          style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+                          style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold, color: Colors.red),
                         ),
                       ],
                     ),
                   ),
                 ),
                 Expanded(
-                  child: WaterUsageChart(waterUsage: waterUsage),
+                  child: WaterUsageChart(waterUsage: waterUsage, recommendedLiters: predictNextDayConsumption(waterUsage)),
                 ),
               ],
             )
@@ -134,12 +135,12 @@ class _YourWaterUsageScreenState extends State<YourWaterUsageScreen> {
   }
 }
 
-
 class WaterUsageChart extends StatelessWidget {
   final List<String> weekdays = ['Mon', 'Tue', 'Wed', 'Thurs', 'Fri', 'Sat', 'Sun'];
   final List<int> waterUsage;
+  final double recommendedLiters;
 
-  WaterUsageChart({required this.waterUsage});
+  WaterUsageChart({required this.waterUsage, required this.recommendedLiters});
 
   @override
   Widget build(BuildContext context) {
@@ -193,10 +194,22 @@ class WaterUsageChart extends StatelessWidget {
               dotData: FlDotData(show: false),
               belowBarData: BarAreaData(show: false),
             ),
+            // Add the red dotted line representing recommended liters
+            LineChartBarData(
+              spots: weekdays
+                  .asMap()
+                  .entries
+                  .map((entry) => FlSpot(entry.key.toDouble(), recommendedLiters))
+                  .toList(),
+              isCurved: true,
+              colors: [Colors.red],
+              dotData: FlDotData(show: false),
+              belowBarData: BarAreaData(show: false),
+              dashArray: [5, 5], // Make the line dotted
+            ),
           ],
         ),
       ),
     );
   }
 }
-
