@@ -13,6 +13,17 @@ class _YourWaterUsageScreenState extends State<YourWaterUsageScreen> {
   int _selectedIndex = 0;
   final List<int> waterUsage = List.generate(7, (_) => Random().nextInt(21) + 30);
 
+  // Linear regression model
+  double predictNextDayConsumption(List<int> data) {
+    double average = calculateAverage(data);
+    return average * 0.9; // Adjust the multiplier to 0.9 for the recommendation.
+  }
+
+  double calculateAverage(List<int> data) {
+    double total = data.reduce((sum, value) => sum + value).toDouble();
+    return total / data.length;
+  }
+
   void _onNavItemTapped(int index) {
     setState(() {
       _selectedIndex = index;
@@ -78,7 +89,7 @@ class _YourWaterUsageScreenState extends State<YourWaterUsageScreen> {
           ? Column(
               children: [
                 Padding(
-                  padding: const EdgeInsets.only(top: 16), // Add some top padding here
+                  padding: const EdgeInsets.only(top: 16),
                   child: Align(
                     alignment: Alignment.topCenter,
                     child: Column(
@@ -90,6 +101,15 @@ class _YourWaterUsageScreenState extends State<YourWaterUsageScreen> {
                         ),
                         Text(
                           '${waterUsage.reduce((sum, value) => sum + value)} liters',
+                          style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+                        ),
+                        const SizedBox(height: 16), // Add some spacing
+                        const Text(
+                          'Recommended Water Usage for Next Day',
+                          style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                        ),
+                        Text(
+                          '${predictNextDayConsumption(waterUsage).toStringAsFixed(1)} liters',
                           style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
                         ),
                       ],
@@ -113,6 +133,7 @@ class _YourWaterUsageScreenState extends State<YourWaterUsageScreen> {
     );
   }
 }
+
 
 class WaterUsageChart extends StatelessWidget {
   final List<String> weekdays = ['Mon', 'Tue', 'Wed', 'Thurs', 'Fri', 'Sat', 'Sun'];
