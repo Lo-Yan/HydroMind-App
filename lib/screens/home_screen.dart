@@ -14,18 +14,13 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   String selectedGoal = '';
 
+  // Move the updateGoalConfirmation function to the HomeScreen class
   void updateGoalConfirmation(bool confirmed, String goal) {
     if (confirmed) {
       setState(() {
         selectedGoal = goal;
       });
     }
-  }
-
-  @override
-  void initState() {
-    super.initState();
-    selectedGoal = widget.selectedGoal;
   }
 
   @override
@@ -44,12 +39,13 @@ class _HomeScreenState extends State<HomeScreen> {
         backgroundColor: Colors.black,
       ),
       body: Padding(
+
         padding: const EdgeInsets.symmetric(horizontal: 16.0),
         child: Center(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              selectedGoal.isNotEmpty
+              widget.selectedGoal.isNotEmpty // Use widget.selectedGoal here
                   ? ElevatedButton(
                       onPressed: () {
                         Navigator.push(
@@ -57,7 +53,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           MaterialPageRoute(
                             builder: (context) => GoalsScreen(
                               onConfirmationChanged: updateGoalConfirmation,
-                              selectedGoal: selectedGoal,
+                              selectedGoal: widget.selectedGoal, // Pass the selectedGoal to GoalsScreen
                             ),
                           ),
                         );
@@ -74,7 +70,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           ),
                           const SizedBox(height: 8),
                           Text(
-                            'Your Goals: ($selectedGoal)',
+                            'Your Goals: (${widget.selectedGoal})', // Use widget.selectedGoal here
                             style: const TextStyle(fontSize: 24),
                           ),
                         ],
@@ -95,7 +91,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           MaterialPageRoute(
                             builder: (context) => GoalsScreen(
                               onConfirmationChanged: updateGoalConfirmation,
-                              selectedGoal: selectedGoal,
+                              selectedGoal: widget.selectedGoal, // Pass the selectedGoal to GoalsScreen
                             ),
                           ),
                         );
@@ -107,7 +103,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => YourWaterUsageScreen(),
+                      builder: (context) => YourWaterUsageScreen(selectedGoal: widget.selectedGoal), // Pass the selectedGoal to YourWaterUsageScreen
                     ),
                   );
                 },

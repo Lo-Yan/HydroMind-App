@@ -3,7 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:fl_chart/fl_chart.dart';
 
 class YourWaterUsageScreen extends StatefulWidget {
-  const YourWaterUsageScreen({Key? key}) : super(key: key);
+  final String selectedGoal;
+  const YourWaterUsageScreen({Key? key, required this.selectedGoal}) : super(key: key);
 
   @override
   _YourWaterUsageScreenState createState() => _YourWaterUsageScreenState();
@@ -16,7 +17,7 @@ class _YourWaterUsageScreenState extends State<YourWaterUsageScreen> {
   // Linear regression model
   double predictNextDayConsumption(List<int> data) {
     double average = calculateAverage(data);
-    return average * 0.95; // Adjust the multiplier to 0.9 for the recommendation.
+    return average * getMultiplier(); // Use getMultiplier() function to get the correct multiplier.
   }
 
   double calculateAverage(List<int> data) {
@@ -24,12 +25,23 @@ class _YourWaterUsageScreenState extends State<YourWaterUsageScreen> {
     return total / data.length;
   }
 
+  double getMultiplier() {
+    if (widget.selectedGoal == 'Novice') {
+      return 0.95;
+    } else if (widget.selectedGoal == 'Seasoned') {
+      return 0.85;
+    } else if (widget.selectedGoal == 'Elite') {
+      return 0.75;
+    } else {
+      return 1.0;
+    }
+  }
+
   void _onNavItemTapped(int index) {
     setState(() {
       _selectedIndex = index;
     });
   }
-
 
   @override
   Widget build(BuildContext context) {

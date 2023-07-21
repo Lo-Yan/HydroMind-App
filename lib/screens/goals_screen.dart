@@ -87,39 +87,39 @@ class GoalsScreen extends StatelessWidget {
   }
 
   void _showConfirmationDialog(BuildContext context, String goal) {
-    showDialog(
-      context: context,
-      builder: (context) {
-        return AlertDialog(
-          title: const Text('Confirmation'),
-          content: const Text('Are you sure you want to proceed?'),
-          actions: [
-            TextButton(
-              onPressed: () {
-                Navigator.pop(context); // Close the dialog
-                if (onConfirmationChanged != null) {
-                  onConfirmationChanged!(true, goal); // Notify the callback function in HomeScreen
-                }
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => HomeScreen(
-                      selectedGoal: goal, // Pass the selected goal description back to HomeScreen
-                    ),
+  showDialog(
+    context: context,
+    builder: (context) {
+      return AlertDialog(
+        title: const Text('Confirmation'),
+        content: const Text('Are you sure you want to proceed?'),
+        actions: [
+          TextButton(
+            onPressed: () {
+              Navigator.pop(context); // Close the dialog
+              if (onConfirmationChanged != null) {
+                onConfirmationChanged!(true, goal); // Notify the callback function in HomeScreen
+              }
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => HomeScreen(
+                    selectedGoal: goal, // Pass the selected goal description back to HomeScreen
                   ),
-                );
-              },
-              child: const Text('Confirm'),
-            ),
-            TextButton(
-              onPressed: () {
-                Navigator.pop(context); // Close the dialog
-              },
-              child: const Text('Cancel'),
-            ),
-          ],
-        );
-      },
-    );
-  }
+                ),
+              );
+            },
+            child: const Text('Confirm'),
+          ),
+          TextButton(
+            onPressed: () {
+              Navigator.pop(context); // Close the dialog
+            },
+            child: const Text('Cancel'),
+          ),
+        ],
+      );
+    },
+  );
+}
 }
