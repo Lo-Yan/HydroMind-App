@@ -12,8 +12,11 @@ class YourWaterUsageScreen extends StatefulWidget {
 
 class _YourWaterUsageScreenState extends State<YourWaterUsageScreen> {
   int _selectedIndex = 0;
-  final List<int> waterUsage = List.generate(7, (_) => Random().nextInt(10) + 40);
+  final List<int> waterUsageDays = List.generate(7, (_) => Random().nextInt(10) + 40); // Data for 7 days
 
+  final List<int> waterUsageMonths = List.generate(4, (_) => Random().nextInt(200) + 300); // Data for 4 months
+  final List<String> weekdays = ['Mon', 'Tue', 'Wed', 'Thurs', 'Fri', 'Sat', 'Sun'];
+  final List<String> months = ['Apr', 'May', 'Jun', 'Jul'];
   // Linear regression model
   double predictNextDayConsumption(List<int> data) {
     double average = calculateAverage(data);
@@ -113,8 +116,8 @@ class _YourWaterUsageScreenState extends State<YourWaterUsageScreen> {
                           style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                         ),
                         Text(
-                          '${waterUsage.reduce((sum, value) => sum + value)} liters',
-                          style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+                          '${waterUsageDays.reduce((sum, value) => sum + value)} liters',
+                          style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold, color: Colors.blue),
                         ),
                         const SizedBox(height: 16), // Add some spacing
                         const Text(
@@ -122,7 +125,7 @@ class _YourWaterUsageScreenState extends State<YourWaterUsageScreen> {
                           style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.red),
                         ),
                         Text(
-                          '${predictNextDayConsumption(waterUsage).toStringAsFixed(1)} liters',
+                          '${predictNextDayConsumption(waterUsageDays).toStringAsFixed(1)} liters',
                           style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold, color: Colors.red),
                         ),
                       ],
@@ -130,16 +133,48 @@ class _YourWaterUsageScreenState extends State<YourWaterUsageScreen> {
                   ),
                 ),
                 Expanded(
-                  child: WaterUsageChart(waterUsage: waterUsage, recommendedLiters: predictNextDayConsumption(waterUsage)),
+                  child: WaterUsageLineChart(
+                    waterUsage: waterUsageDays,
+                    recommendedLiters: predictNextDayConsumption(waterUsageDays),
+                    labels: weekdays,
+                  ),
                 ),
               ],
             )
           : Column(
               children: [
-                Expanded(
-                  child: Center(
-                    child: Text('This is the months screen.'),
+                Padding(
+                  padding: const EdgeInsets.only(top: 16),
+                  child: Align(
+                    alignment: Alignment.topCenter,
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        const Text(
+                          'Average Monthly Water Consumption',
+                          style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                        ),
+                        RichText(
+                        text: TextSpan(
+                          style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+                          children: [
+                            TextSpan(
+                              text: '${(waterUsageMonths.take(3).reduce((sum, value) => sum + value) / 3).toInt()}',
+                              style: const TextStyle(color: Colors.blue), // Set the color to blue
+                            ),
+                            const TextSpan(
+                              text: ' liters',
+                              style: TextStyle(color: Colors.blue), // Set the word "liters" in blue color
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
                   ),
+                ),
+              ),
+                Expanded(
+                  child: WaterUsageBarChart(waterUsage: waterUsageMonths, labels: months),
                 ),
               ],
             ),
@@ -147,12 +182,12 @@ class _YourWaterUsageScreenState extends State<YourWaterUsageScreen> {
   }
 }
 
-class WaterUsageChart extends StatelessWidget {
-  final List<String> weekdays = ['Mon', 'Tue', 'Wed', 'Thurs', 'Fri', 'Sat', 'Sun'];
+class WaterUsageLineChart extends StatelessWidget {
+  final List<String> labels;
   final List<int> waterUsage;
   final double recommendedLiters;
 
-  WaterUsageChart({required this.waterUsage, required this.recommendedLiters});
+  WaterUsageLineChart({required this.labels, required this.waterUsage, required this.recommendedLiters});
 
   @override
   Widget build(BuildContext context) {
@@ -169,16 +204,16 @@ class WaterUsageChart extends StatelessWidget {
               reservedSize: 22,
               getTitles: (value) {
                 int index = value.toInt();
-                if (index >= 0 && index < weekdays.length) {
-                  return weekdays[index];
+                if (index >= 0 && index < labels.length) {
+                  return labels[index];
                 }
                 return '';
               },
             ),
             leftTitles: SideTitles(
               showTitles: true,
-              margin: 8,
-              reservedSize: 28,
+              margin: 16, // Adjust the margin for leftTitles
+              reservedSize: 40, // Adjust the reservedSize for leftTitles
               getTitles: (value) {
                 return value.toInt().toString();
               },
@@ -197,7 +232,7 @@ class WaterUsageChart extends StatelessWidget {
           borderData: FlBorderData(show: true),
           lineBarsData: [
             LineChartBarData(
-              spots: weekdays
+              spots: labels
                   .asMap()
                   .entries
                   .map((entry) => FlSpot(entry.key.toDouble(), waterUsage[entry.key].toDouble()))
@@ -208,7 +243,7 @@ class WaterUsageChart extends StatelessWidget {
             ),
             // Add the red dotted line representing recommended liters
             LineChartBarData(
-              spots: weekdays
+              spots: labels
                   .asMap()
                   .entries
                   .map((entry) => FlSpot(entry.key.toDouble(), recommendedLiters))
@@ -224,4 +259,71 @@ class WaterUsageChart extends StatelessWidget {
       ),
     );
   }
+}
+
+class WaterUsageBarChart extends StatelessWidget {
+  final List<String> labels;
+  final List<int> waterUsage;
+
+  WaterUsageBarChart({required this.labels, required this.waterUsage});
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.all(16.0),
+      child: BarChart(
+        BarChartData(
+          gridData: FlGridData(show: false),
+          titlesData: FlTitlesData(
+            show: true,
+            bottomTitles: SideTitles(
+              showTitles: true,
+              margin: 8,
+              getTitles: (double value) {
+                int index = value.toInt();
+                if (index >= 0 && index < labels.length) {
+                  return labels[index];
+                }
+                return '';
+              },
+            ),
+            leftTitles: SideTitles(
+              showTitles: true,
+              margin: 16, // Adjust the margin for leftTitles
+              reservedSize: 40, // Adjust the reservedSize for leftTitles
+              getTitles: (value) {
+                return value.toInt().toString();
+              },
+            ),
+            topTitles: SideTitles(showTitles: false),
+            rightTitles: SideTitles(
+              showTitles: true,
+              reservedSize: 40,
+              getTitles: (value) {
+                return ''; // Remove the word "liters" from y-axis labels
+              },
+            ),
+          ),
+          maxY: waterUsage.reduce(max).toDouble() + 50, // Adjust the maxY for more space
+          borderData: FlBorderData(show: true),
+          barGroups: waterUsage
+              .asMap()
+              .entries
+              .map((entry) => BarChartGroupData(
+                    x: entry.key,
+                    barRods: [
+                      BarChartRodData(y: entry.value.toDouble(), colors: [Colors.blue]),
+                    ],
+                  ))
+              .toList(),
+        ),
+      ),
+    );
+  }
+}
+
+void main() {
+  runApp(MaterialApp(
+    home: YourWaterUsageScreen(selectedGoal: 'Novice'),
+  ));
 }
