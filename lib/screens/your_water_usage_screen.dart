@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:fl_chart/fl_chart.dart';
@@ -155,26 +156,26 @@ class _YourWaterUsageScreenState extends State<YourWaterUsageScreen> {
                           style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                         ),
                         RichText(
-                        text: TextSpan(
-                          style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-                          children: [
-                            TextSpan(
-                              text: '${(waterUsageMonths.take(3).reduce((sum, value) => sum + value) / 3).toInt()}',
-                              style: const TextStyle(color: Colors.blue), // Set the color to blue
-                            ),
-                            const TextSpan(
-                              text: ' liters',
-                              style: TextStyle(color: Colors.blue), // Set the word "liters" in blue color
-                            ),
-                          ],
+                          text: TextSpan(
+                            style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+                            children: [
+                              TextSpan(
+                                text: '${(waterUsageMonths.take(3).reduce((sum, value) => sum + value) / 3).toInt()}',
+                                style: const TextStyle(color: Colors.blue), // Set the color to blue
+                              ),
+                              const TextSpan(
+                                text: ' liters',
+                                style: TextStyle(color: Colors.blue), // Set the word "liters" in blue color
+                              ),
+                            ],
+                          ),
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
                 ),
-              ),
                 Expanded(
-                  child: WaterUsageBarChart(waterUsage: waterUsageMonths, labels: months),
+                  child: WaterUsageBarChartAnimated(waterUsage: waterUsageMonths, labels: months),
                 ),
               ],
             ),
@@ -261,11 +262,38 @@ class WaterUsageLineChart extends StatelessWidget {
   }
 }
 
-class WaterUsageBarChart extends StatelessWidget {
+class WaterUsageBarChartAnimated extends StatefulWidget {
   final List<String> labels;
   final List<int> waterUsage;
 
-  WaterUsageBarChart({required this.labels, required this.waterUsage});
+  WaterUsageBarChartAnimated({required this.labels, required this.waterUsage});
+
+  @override
+  _WaterUsageBarChartAnimatedState createState() => _WaterUsageBarChartAnimatedState();
+}
+
+class _WaterUsageBarChartAnimatedState extends State<WaterUsageBarChartAnimated> {
+  List<double> animatedValues = [];
+
+  @override
+  void initState() {
+    super.initState();
+    // Initialize the animated values to all 0.0 (starting position of the bars)
+    animatedValues = List<double>.filled(widget.waterUsage.length, 0.0);
+    _animateBars();
+  }
+
+  void _animateBars() {
+    // Animate the bars to rise from 0 to their respective amount of water consumed that month
+    for (int i = 0; i < widget.waterUsage.length; i++) {
+      final double targetValue = widget.waterUsage[i].toDouble();
+      Future.delayed(Duration(milliseconds: 200), () {
+        setState(() {
+          animatedValues[i] = targetValue;
+        });
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -281,8 +309,8 @@ class WaterUsageBarChart extends StatelessWidget {
               margin: 8,
               getTitles: (double value) {
                 int index = value.toInt();
-                if (index >= 0 && index < labels.length) {
-                  return labels[index];
+                if (index >= 0 && index < widget.labels.length) {
+                  return widget.labels[index];
                 }
                 return '';
               },
@@ -304,23 +332,28 @@ class WaterUsageBarChart extends StatelessWidget {
               },
             ),
           ),
-          maxY: waterUsage.reduce(max).toDouble() + 50, // Adjust the maxY for more space
-          borderData: FlBorderData(show: true),
-          barGroups: waterUsage
+          maxY: widget.waterUsage.reduce(max).toDouble() + 50, // Adjust the maxY for more space
+          barGroups: widget.waterUsage
               .asMap()
               .entries
-              .map((entry) => BarChartGroupData(
-                    x: entry.key,
-                    barRods: [
-                      BarChartRodData(y: entry.value.toDouble(), colors: [Colors.blue]),
-                    ],
-                  ))
+              .map(
+                (entry) => BarChartGroupData(
+                  x: entry.key,
+                  barRods: [
+                    BarChartRodData(
+                      y: animatedValues[entry.key], // Use the animated value for the height
+                      colors: [Colors.blue],
+                    ),
+                  ],
+                ),
+              )
               .toList(),
         ),
       ),
     );
   }
 }
+
 
 void main() {
   runApp(MaterialApp(
