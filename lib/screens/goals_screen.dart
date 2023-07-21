@@ -11,6 +11,42 @@ class GoalsScreen extends StatelessWidget {
     required this.selectedGoal,
   }) : super(key: key);
 
+  void startTutorial(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: Text('Tutorial'),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text('Welcome to the Goals Screen!'),
+              const SizedBox(height: 8),
+              Text('This screen contains different water-saving goals for users. Novice being the easiest (slowest progress) and Elite being the hardest (fastest progress).'),
+              const SizedBox(height: 8),
+              Text('1. Tap on a goal box to select a water-saving goal.'),
+              const SizedBox(height: 8),
+              Text('2. After selecting a goal, you will be prompted to confirm your selection.'),
+              const SizedBox(height: 8),
+              Text('3. Upon confirmation, the selected goal will be passed back to the HomeScreen.'),
+              const SizedBox(height: 8),
+              Text('4. To check whether the selected goal is in place, it will be displayed in the HomeScreen.'),
+            ],
+          ),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: Text('Close'),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -40,6 +76,12 @@ class GoalsScreen extends StatelessWidget {
           ],
         ),
       ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () => startTutorial(context), // Call the function to show the tutorial dialog
+        child: Icon(Icons.help_outline), // Replace with your desired icon for the "?"
+        tooltip: 'Show Tutorial', // Tooltip message for the button
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
     );
   }
 
