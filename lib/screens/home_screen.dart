@@ -23,6 +23,38 @@ class _HomeScreenState extends State<HomeScreen> {
     }
   }
 
+  void startTutorial() {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: Text('Tutorial'),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text('Welcome to HydroMind!'),
+              const SizedBox(height: 8),
+              Text('This App is designed to be simple and easy to use.'),
+              const SizedBox(height: 8),
+              Text('1. The button with the target icon will take you to the Goals Screen. You can select the goal you want and our algorithm will automatically set the newly recommended water saving target for you.'),
+              const SizedBox(height: 8),
+              Text('2. The button with the shower icon will take you to Your Water Usage Screen. You can discover how much water you have used each day and find out the savings target that is set by our algorithm.'),
+            ],
+          ),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: Text('Close'),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -39,7 +71,6 @@ class _HomeScreenState extends State<HomeScreen> {
         backgroundColor: Colors.black,
       ),
       body: Padding(
-
         padding: const EdgeInsets.symmetric(horizontal: 16.0),
         child: Center(
           child: Column(
@@ -137,6 +168,12 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
         ),
       ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: startTutorial, // Call the function to show the tutorial dialog
+        child: Icon(Icons.help_outline), // Replace with your desired icon for the "?"
+        tooltip: 'Show Tutorial', // Tooltip message for the button
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
     );
   }
 }
