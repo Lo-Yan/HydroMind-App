@@ -55,6 +55,26 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
+void showAddDeviceNotification() {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: Text('Add Device'),
+          content: Text('Please add your device to continue.'),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: Text('Next'),
+            ),
+          ],
+        );
+      },
+    );
+  }
+  
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -69,6 +89,11 @@ class _HomeScreenState extends State<HomeScreen> {
         centerTitle: true,
         automaticallyImplyLeading: false,
         backgroundColor: Colors.black,
+        leading: PlusButton(
+          onPressed: () {
+            showAddDeviceNotification();
+          }, // Show the notification when the plus button is pressed.
+        ),
       ),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 16.0),
@@ -134,7 +159,8 @@ class _HomeScreenState extends State<HomeScreen> {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => YourWaterUsageScreen(selectedGoal: widget.selectedGoal), // Pass the selectedGoal to YourWaterUsageScreen
+                      builder: (context) =>
+                          YourWaterUsageScreen(selectedGoal: widget.selectedGoal), // Pass the selectedGoal to YourWaterUsageScreen
                     ),
                   );
                 },
@@ -178,6 +204,7 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 }
 
+
 class GoalsButton extends StatelessWidget {
   final VoidCallback onPressed;
 
@@ -215,3 +242,18 @@ class GoalsButton extends StatelessWidget {
     );
   }
 }
+
+class PlusButton extends StatelessWidget {
+  final VoidCallback onPressed;
+
+  const PlusButton({Key? key, required this.onPressed}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return IconButton(
+      icon: Icon(Icons.add, color: Colors.white),
+      onPressed: onPressed,
+    );
+  }
+}
+
