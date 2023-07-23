@@ -1,13 +1,8 @@
-/*
-this is the onboarding screen that look like traffic light. 
-when the user swipe left/ right, they can see the different traffic light 
-*/
-
 import 'package:flutter/material.dart';
-import 'bottom_nav_bar.dart';
 import 'home_screen.dart';
 import 'onboarding_contents.dart';
 import 'size_config.dart';
+import 'choose_user_screen.dart';
 
 class OnboardingScreen extends StatefulWidget {
   const OnboardingScreen({Key? key}) : super(key: key);
@@ -35,11 +30,11 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
   AnimatedContainer _buildDots({int? index}) {
     return AnimatedContainer(
       duration: const Duration(milliseconds: 200),
-      decoration: const BoxDecoration(
+      decoration: BoxDecoration(
         borderRadius: BorderRadius.all(
           Radius.circular(50),
         ),
-        color: Color(0xFF000000),
+        color: _currentPage == index ? Color(0xFF000000) : Colors.grey,
       ),
       margin: const EdgeInsets.only(right: 5),
       height: 10,
@@ -48,10 +43,11 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
     );
   }
 
-  void navigateToHomeScreen() {
+
+  void navigateToChooseUserScreen() {
     Navigator.push(
       context,
-      MaterialPageRoute(builder: (context) => BottomNavBar()),
+      MaterialPageRoute(builder: (context) => ChooseUserScreen()),
     );
   }
 
@@ -124,9 +120,9 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                       ? Padding(
                           padding: const EdgeInsets.all(30),
                           child: ElevatedButton(
-                            onPressed: navigateToHomeScreen,
+                            onPressed: navigateToChooseUserScreen,
                             child: const Text(
-                              "START",
+                              "NEXT",
                               style: TextStyle(color: Colors.white),
                             ),
                             style: ElevatedButton.styleFrom(
@@ -134,6 +130,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(50),
                               ),
+                              elevation: 0,
                               padding: (width <= 550)
                                   ? const EdgeInsets.symmetric(horizontal: 100, vertical: 20)
                                   : EdgeInsets.symmetric(horizontal: width * 0.2, vertical: 25),
@@ -146,7 +143,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               TextButton(
-                                onPressed: skipOnboarding, // Skip to HomeScreen
+                                onPressed: skipOnboarding,
                                 child: const Text(
                                   "SKIP",
                                   style: TextStyle(color: Colors.black),
