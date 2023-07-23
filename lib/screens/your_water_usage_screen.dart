@@ -42,107 +42,131 @@ class _YourWaterUsageScreenState extends State<YourWaterUsageScreen> {
     }
   }
 
+  // Calculate the amount of water saved in the middle two months
+  int calculateWaterSavedLastMonth(List<int> data) {
+    if (data.length < 4) return 0;
+    int firstMonthUsage = data[1]; // Second month usage
+    int secondMonthUsage = data[2]; // Third month usage
+    return firstMonthUsage - secondMonthUsage;
+  }
+
   void _onNavItemTapped(int index) {
     setState(() {
       _selectedIndex = index;
     });
   }
 
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Your Water Usage Screen'),
-        bottom: PreferredSize(
-          preferredSize: const Size.fromHeight(48),
-          child: Row(
-            children: [
-              Expanded(
-                child: GestureDetector(
+@override
+Widget build(BuildContext context) {
+  return Scaffold(
+    appBar: AppBar(
+      backgroundColor: Colors.blue, // Set a background color for the app bar
+      title: const Text(
+        'Your Water Usage Screen',
+        style: TextStyle(color: Colors.white),
+      ),
+      bottom: PreferredSize(
+        preferredSize: const Size.fromHeight(48),
+        child: Row(
+          children: [
+            Expanded(
+              child: Material(
+                color: Colors.transparent,
+                child: InkWell(
                   onTap: () {
                     _onNavItemTapped(0);
                   },
-                  child: Container(
-                    color: _selectedIndex == 0 ? Colors.blue : Colors.transparent,
-                    child: const Center(
-                      child: Text(
-                        'Days',
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 16,
-                          fontWeight: FontWeight.bold,
+                  child: Opacity(
+                    opacity: _selectedIndex == 0 ? 1.0 : 0.5, // Set the opacity here
+                    child: Container(
+                      color: _selectedIndex == 0 ? Colors.blue : Colors.transparent,
+                      child: const Center(
+                        child: Text(
+                          'Days',
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
+                          ),
                         ),
                       ),
+                      padding: const EdgeInsets.symmetric(vertical: 12),
                     ),
-                    padding: const EdgeInsets.symmetric(vertical: 12),
                   ),
                 ),
               ),
-              Expanded(
-                child: GestureDetector(
+            ),
+            Expanded(
+              child: Material(
+                color: Colors.transparent,
+                child: InkWell(
                   onTap: () {
                     _onNavItemTapped(1);
                   },
-                  child: Container(
-                    color: _selectedIndex == 1 ? Colors.blue : Colors.transparent,
-                    child: const Center(
-                      child: Text(
-                        'Months',
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 16,
-                          fontWeight: FontWeight.bold,
+                  child: Opacity(
+                    opacity: _selectedIndex == 1 ? 1.0 : 0.5, // Set the opacity here
+                    child: Container(
+                      color: _selectedIndex == 1 ? Colors.blue : Colors.transparent,
+                      child: const Center(
+                        child: Text(
+                          'Months',
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
+                          ),
                         ),
                       ),
+                      padding: const EdgeInsets.symmetric(vertical: 12),
                     ),
-                    padding: const EdgeInsets.symmetric(vertical: 12),
                   ),
                 ),
               ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
+    ),
       body: _selectedIndex == 0
           ? Column(
-              children: [
-                Padding(
-                  padding: const EdgeInsets.only(top: 16),
-                  child: Align(
-                    alignment: Alignment.topCenter,
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        const Text(
-                          'Total Water Consumed for the Week',
-                          style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-                        ),
-                        Text(
-                          '${waterUsageDays.reduce((sum, value) => sum + value)} liters',
-                          style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold, color: Colors.blue),
-                        ),
-                        const SizedBox(height: 16), // Add some spacing
-                        const Text(
-                          'Recommended Water Usage for Next Day',
-                          style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.red),
-                        ),
-                        Text(
-                          '${predictNextDayConsumption(waterUsageDays).toStringAsFixed(1)} liters',
-                          style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold, color: Colors.red),
-                        ),
-                      ],
-                    ),
+        children: [
+          Padding(
+            padding: const EdgeInsets.only(top: 16),
+            child: Align(
+              alignment: Alignment.topCenter,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  const Text(
+                    'Total Water Consumed for the Week',
+                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                   ),
-                ),
-                Expanded(
-                  child: WaterUsageLineChart(
-                    waterUsage: waterUsageDays,
-                    recommendedLiters: predictNextDayConsumption(waterUsageDays),
-                    labels: weekdays,
+                  Text(
+                    '${waterUsageDays.reduce((sum, value) => sum + value)} liters',
+                    style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold, color: Colors.blue),
                   ),
-                ),
-              ],
-            )
+                  const SizedBox(height: 16), // Add some spacing
+                  const Text(
+                    'Recommended Water Usage for Next Day',
+                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.red),
+                  ),
+                  Text(
+                    '${predictNextDayConsumption(waterUsageDays).toStringAsFixed(1)} liters',
+                    style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold, color: Colors.red),
+                  ),
+                ],
+              ),
+            ),
+          ),
+          Expanded(
+            child: WaterUsageLineChart(
+              waterUsage: waterUsageDays,
+              recommendedLiters: predictNextDayConsumption(waterUsageDays),
+              labels: weekdays,
+            ),
+          ),
+        ],
+      )
           : Column(
               children: [
                 Padding(
@@ -167,6 +191,26 @@ class _YourWaterUsageScreenState extends State<YourWaterUsageScreen> {
                               const TextSpan(
                                 text: ' liters',
                                 style: TextStyle(color: Colors.blue), // Set the word "liters" in blue color
+                              ),
+                            ],
+                          ),
+                        ),
+                        const SizedBox(height: 16), // Add some spacing
+                        const Text(
+                          'Amount of Water Saved Last Month',
+                          style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                        ),
+                        RichText(
+                          text: TextSpan(
+                            style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+                            children: [
+                              TextSpan(
+                                text: '${calculateWaterSavedLastMonth(waterUsageMonths)}',
+                                style: const TextStyle(color: Colors.green), // Set the color to green
+                              ),
+                              const TextSpan(
+                                text: ' liters',
+                                style: TextStyle(color: Colors.green), // Set the word "liters" in green color
                               ),
                             ],
                           ),
@@ -300,56 +344,62 @@ class _WaterUsageBarChartAnimatedState extends State<WaterUsageBarChartAnimated>
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.all(16.0),
-      child: BarChart(
-        BarChartData(
-          gridData: FlGridData(show: false),
-          titlesData: FlTitlesData(
-            show: true,
-            bottomTitles: SideTitles(
-              showTitles: true,
-              margin: 8,
-              getTitles: (double value) {
-                int index = value.toInt();
-                if (index >= 0 && index < widget.labels.length) {
-                  return widget.labels[index];
-                }
-                return '';
-              },
-            ),
-            leftTitles: SideTitles(
-              showTitles: true,
-              margin: 16, // Adjust the margin for leftTitles
-              reservedSize: 40, // Adjust the reservedSize for leftTitles
-              getTitles: (value) {
-                return value.toInt().toString();
-              },
-            ),
-            topTitles: SideTitles(showTitles: false),
-            rightTitles: SideTitles(
-              showTitles: true,
-              reservedSize: 40,
-              getTitles: (value) {
-                return ''; // Remove the word "liters" from y-axis labels
-              },
-            ),
-          ),
-          maxY: widget.waterUsage.reduce(max).toDouble() + 50, // Adjust the maxY for more space
-          barGroups: widget.waterUsage
-              .asMap()
-              .entries
-              .map(
-                (entry) => BarChartGroupData(
-                  x: entry.key,
-                  barRods: [
-                    BarChartRodData(
-                      y: animatedValues[entry.key], // Use the animated value for the height
-                      colors: [Colors.blue],
-                    ),
-                  ],
+      child: TweenAnimationBuilder(
+        duration: const Duration(milliseconds: 500),
+        tween: Tween(begin: 0.0, end: 1.0),
+        builder: (context, double value, child) {
+          return BarChart(
+            BarChartData(
+              gridData: FlGridData(show: false),
+              titlesData: FlTitlesData(
+                show: true,
+                bottomTitles: SideTitles(
+                  showTitles: true,
+                  margin: 8,
+                  getTitles: (double value) {
+                    int index = value.toInt();
+                    if (index >= 0 && index < widget.labels.length) {
+                      return widget.labels[index];
+                    }
+                    return '';
+                  },
                 ),
-              )
-              .toList(),
-        ),
+                leftTitles: SideTitles(
+                  showTitles: true,
+                  margin: 16, // Adjust the margin for leftTitles
+                  reservedSize: 40, // Adjust the reservedSize for leftTitles
+                  getTitles: (value) {
+                    return value.toInt().toString();
+                  },
+                ),
+                topTitles: SideTitles(showTitles: false),
+                rightTitles: SideTitles(
+                  showTitles: true,
+                  reservedSize: 40,
+                  getTitles: (value) {
+                    return ''; // Remove the word "liters" from y-axis labels
+                  },
+                ),
+              ),
+              maxY: widget.waterUsage.reduce(max).toDouble() + 50, // Adjust the maxY for more space
+              barGroups: widget.waterUsage
+                  .asMap()
+                  .entries
+                  .map(
+                    (entry) => BarChartGroupData(
+                      x: entry.key,
+                      barRods: [
+                        BarChartRodData(
+                          y: entry.value.toDouble() * value, // Use the animated value for the height
+                          colors: [Colors.blue],
+                        ),
+                      ],
+                    ),
+                  )
+                  .toList(),
+            ),
+          );
+        },
       ),
     );
   }
