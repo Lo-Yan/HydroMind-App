@@ -15,7 +15,8 @@ class _YourWaterUsageScreenState extends State<YourWaterUsageScreen> {
   int _selectedIndex = 0;
   final List<int> waterUsageDays = List.generate(7, (_) => Random().nextInt(10) + 40); // Data for 7 days
 
-  final List<int> waterUsageMonths = List.generate(4, (_) => Random().nextInt(200) + 300); // Data for 4 months
+  final List<int> waterUsageMonths = List.generate(4, (index) => Random().nextInt(1000) + 1500)
+    ..sort((a, b) => b.compareTo(a)); // Generate random numbers and sort them in descending order
   final List<String> weekdays = ['Mon', 'Tue', 'Wed', 'Thurs', 'Fri', 'Sat', 'Sun'];
   final List<String> months = ['Apr', 'May', 'Jun', 'Jul'];
   // Linear regression model
