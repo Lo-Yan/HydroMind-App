@@ -7,11 +7,13 @@ class ProfileScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text(
-          'Profile Screen',
-          style: TextStyle(
-            color: Colors.white,
-            fontSize: 24,
+        title: Center(
+          child: const Text(
+            'Profile',
+            style: TextStyle(
+              color: Colors.white,
+              fontSize: 24,
+            ),
           ),
         ),
         automaticallyImplyLeading: false, // Add this line to remove the back button
@@ -19,7 +21,7 @@ class ProfileScreen extends StatelessWidget {
       ),
       body: Center(
         child: const Text(
-          'This is the Profile screen.',
+          'This is the Profile.',
           style: TextStyle(
             fontSize: 18,
           ),
