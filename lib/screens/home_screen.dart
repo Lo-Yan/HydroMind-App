@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'goals_screen.dart';
 import 'your_water_usage_screen.dart';
-
+import 'globals.dart';
 class HomeScreen extends StatefulWidget {
   final String selectedGoal;
 
@@ -13,8 +13,10 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   String selectedGoal = '';
-  // Add the profilePictureUrl variable here with the actual URL of the profile picture
-  final String profilePictureUrl = 'https://example.com/profile_picture.png';
+
+  final String janeFooImagePath = "assets/images/user1_avatar.jpg";
+  final String johnFooImagePath = "assets/images/user2_avatar.jpg"; 
+  final String jerryFooImagePath = "assets/images/user3_avatar.jpg";
 
   // Move the updateGoalConfirmation function to the HomeScreen class
   void updateGoalConfirmation(bool confirmed, String goal) {
@@ -102,6 +104,16 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
+        // Set the image path based on the selectedUsername
+    String imagePath = '';
+    if (Globals.selectedUsername == 'Jane Foo') {
+      imagePath = janeFooImagePath;
+    } else if (Globals.selectedUsername == 'John Foo') {
+      imagePath = johnFooImagePath;
+    } else if (Globals.selectedUsername == 'Jerry Foo') {
+      imagePath = jerryFooImagePath;
+    }
+
     return Scaffold(
       appBar: AppBar(
         title: const Text(
@@ -119,11 +131,13 @@ class _HomeScreenState extends State<HomeScreen> {
             showAddDeviceNotification();
           },
         ),
-        actions: [
+       actions: [
           Padding(
             padding: const EdgeInsets.only(right: 16.0),
             child: CircleAvatar(
-              backgroundImage: NetworkImage(profilePictureUrl),
+              backgroundImage: imagePath.isEmpty
+                  ? AssetImage("assets/images/placeholder_avatar.jpg") 
+                  : AssetImage(imagePath),
               radius: 20,
             ),
           ),
