@@ -2,19 +2,6 @@ import 'package:flutter/material.dart';
 import 'home_screen.dart';
 import 'bottom_nav_bar.dart';
 
-class User {
-  final String username;
-  final String avatarUrl;
-
-  User({required this.username, required this.avatarUrl});
-}
-
-final List<User> users = [
-  User(username: "Foo Shu Hui", avatarUrl: "assets/images/user1_avatar.jpg"),
-  User(username: "Shu Hui Foo", avatarUrl: "assets/images/user2_avatar.jpg"),
-  User(username: "Hui Shu Foo", avatarUrl: "assets/images/user3_avatar.jpg"),
-];
-
 class ChooseUserScreen extends StatelessWidget {
   void navigateToHomeScreen(BuildContext context) {
     Navigator.push(
@@ -27,33 +14,79 @@ class ChooseUserScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Choose User'),
+        title: Text(
+          "Who's Using ?",
+          style: TextStyle(fontSize: 24, color: Colors.white),
+        ),
+        backgroundColor: Colors.black,
+        centerTitle: true,
       ),
-      body: ListView.builder(
-        itemCount: users.length,
-        itemBuilder: (context, index) {
-          final user = users[index];
-          return Padding(
-            padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
-            child: InkWell(
+      backgroundColor: Colors.black,
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: [
+            GestureDetector(
               onTap: () {
-                // Handle user selection here
-                print("Selected user: ${user.username}");
-                // Call the navigateToHomeScreen function when a user is selected
+                // Handle icon 1 click here
+                print("user1_avatar clicked");
                 navigateToHomeScreen(context);
               },
-              child: Card(
-                child: ListTile(
-                  leading: CircleAvatar(
-                    radius: 30,
-                    backgroundImage: AssetImage(user.avatarUrl),
+              child: Column(
+                children: [
+                  CircleAvatar(
+                    radius: 70,
+                    backgroundImage: AssetImage("assets/images/user1_avatar.jpg"),
                   ),
-                  title: Text(user.username),
-                ),
+                  SizedBox(height: 10),
+                  Text(
+                    "Jane Foo",
+                    style: TextStyle(color: Colors.white, fontSize: 18),
+                  ),
+                ],
               ),
             ),
-          );
-        },
+            GestureDetector(
+              onTap: () {
+                print("user2_avatar clicked");
+                navigateToHomeScreen(context);
+              },
+              child: Column(
+                children: [
+                  CircleAvatar(
+                    radius: 70,
+                    backgroundImage: AssetImage("assets/images/user2_avatar.jpg"),
+                  ),
+                  SizedBox(height: 10),
+                  Text(
+                    "John Foo",
+                    style: TextStyle(color: Colors.white, fontSize: 18),
+                  ),
+                ],
+              ),
+            ),
+            GestureDetector(
+              onTap: () {
+                // Handle icon 3 click here
+                print("user3_avatar clicked");
+                navigateToHomeScreen(context);
+              },
+              child: Column(
+                children: [
+                  CircleAvatar(
+                    radius: 70,
+                    backgroundImage: AssetImage("assets/images/user3_avatar.jpg"),
+                  ),
+                  SizedBox(height: 10),
+                  Text(
+                    "Jerry Foo",
+                    style: TextStyle(color: Colors.white, fontSize: 18),
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

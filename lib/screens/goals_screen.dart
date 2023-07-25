@@ -47,11 +47,26 @@ class GoalsScreen extends StatelessWidget {
     );
   }
 
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Goals Screen'),
+        title: Text(
+          'Goals',
+          style: TextStyle(
+            fontSize: 30,
+            color: Colors.white, // Set the title color to white
+          ),
+        ),
+        centerTitle: true,
+        backgroundColor: Colors.black, // Set the background color of the app bar to black
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back, color: Colors.white), // Set the back button color to white
+          onPressed: () {
+            Navigator.of(context).pop();
+          },
+        ),
       ),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 20.0),
@@ -62,71 +77,84 @@ class GoalsScreen extends StatelessWidget {
               'assets/images/goal1.png',
               'Novice',
               context,
+              noviceColor: Color(0xFF5A7D98), // Light Blue for Novice button
             ),
             _buildGoalBox(
               'assets/images/goal2.png',
               'Seasoned',
               context,
+              seasonedColor: Color(0xFF3D5669), // Blue for Seasoned button
             ),
             _buildGoalBox(
               'assets/images/goal3.png',
               'Elite',
               context,
+              eliteColor: Color(0xFF1A252E), // Blue for Elite button
             ),
           ],
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () => startTutorial(context), // Call the function to show the tutorial dialog
-        child: Icon(Icons.help_outline), // Replace with your desired icon for the "?"
-        tooltip: 'Show Tutorial', // Tooltip message for the button
+        onPressed: () => startTutorial(context),
+        child: Icon(Icons.help_outline),
+        tooltip: 'Show Tutorial',
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
     );
   }
-
-  Widget _buildGoalBox(String imagePath, String description, BuildContext context) {
-    return InkWell(
-      onTap: () {
-        _showConfirmationDialog(context, description);
-      },
-      child: Container(
-        width: double.infinity,
-        height: 200,
-        decoration: BoxDecoration(
-          border: Border.all(color: Colors.black),
-          borderRadius: BorderRadius.circular(10),
-        ),
-        child: Row(
-          children: [
-            Expanded(
-              flex: 1,
-              child: Center(
-                child: SizedBox(
-                  width: 150,
-                  height: 150,
-                  child: Image.asset(imagePath),
-                ),
+Widget _buildGoalBox(String imagePath, String description, BuildContext context, {Color? noviceColor, Color? seasonedColor, Color? eliteColor}) {
+  return InkWell(
+    onTap: () {
+      _showConfirmationDialog(context, description);
+    },
+    child: Container(
+      width: double.infinity,
+      height: 180, // Set the height to match the height of the images
+      decoration: BoxDecoration(
+        border: Border.all(color: Colors.black),
+        borderRadius: BorderRadius.circular(10),
+        color: description == 'Novice'
+            ? noviceColor
+            : (description == 'Seasoned'
+                ? seasonedColor
+                : (description == 'Elite' ? eliteColor : null)),
+      ),
+      child: Row(
+        children: [
+          Expanded(
+            flex: 1,
+            child: Center(
+              child: SizedBox(
+                width: 150,
+                height: 150,
+                child: Image.asset(imagePath),
               ),
             ),
-            Expanded(
-              flex: 1,
-              child: Center(
-                child: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Text(
-                    description,
-                    textAlign: TextAlign.center,
-                    style: const TextStyle(fontSize: 30),
+          ),
+          Expanded(
+            flex: 1,
+            child: Center(
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: RichText(
+                  textAlign: TextAlign.center,
+                  text: TextSpan(
+                    text: description,
+                    style: TextStyle(
+                      fontSize: 30,
+                      color: Colors.white,
+                    ),
                   ),
                 ),
               ),
             ),
-          ],
-        ),
+          ),
+        ],
       ),
-    );
-  }
+    ),
+  );
+}
+
 
   void _showConfirmationDialog(BuildContext context, String goal) {
     showDialog(

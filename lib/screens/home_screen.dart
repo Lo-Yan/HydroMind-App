@@ -13,6 +13,8 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   String selectedGoal = '';
+  // Add the profilePictureUrl variable here with the actual URL of the profile picture
+  final String profilePictureUrl = 'https://example.com/profile_picture.png';
 
   // Move the updateGoalConfirmation function to the HomeScreen class
   void updateGoalConfirmation(bool confirmed, String goal) {
@@ -28,34 +30,57 @@ class _HomeScreenState extends State<HomeScreen> {
       context: context,
       builder: (context) {
         return AlertDialog(
-          title: Text('Tutorial'),
-          content: Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text('Welcome to HydroMind!'),
-              const SizedBox(height: 8),
-              Text('This App is designed to be simple and easy to use.'),
-              const SizedBox(height: 8),
-              Text('1. The button with the target icon will take you to the Goals Screen. You can select the goal you want and our algorithm will automatically set the newly recommended water saving target for you.'),
-              const SizedBox(height: 8),
-              Text('2. The button with the shower icon will take you to Your Water Usage Screen. You can discover how much water you have used each day and find out the savings target that is set by our algorithm.'),
-            ],
+          content: SingleChildScrollView(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.only(top: 8.0), // Add padding to the top of the text
+                  child: Text(
+                    'Welcome to HydroMind!',
+                    style: TextStyle(
+                      fontSize: 14, // Increase font size to 14
+                      fontWeight: FontWeight.bold, // Make the text bold
+                    ),
+                  ),
+                ),
+                SizedBox(height: 12),
+                Text(
+                  'This App is designed to be simple and easy to use.',
+                  style: TextStyle(fontSize: 14), // Increase font size to 14
+                ),
+                SizedBox(height: 12),
+                Text(
+                  '1. The button with the target icon will take you to the Goals Screen. You can select the goal you want and our algorithm will automatically set the newly recommended water saving target for you.',
+                  style: TextStyle(fontSize: 14), // Increase font size to 14
+                ),
+                SizedBox(height: 12),
+                Text(
+                  '2. The button with the shower icon will take you to Your Water Usage Screen. You can discover how much water you have used each day and find out the savings target that is set by our algorithm.',
+                  style: TextStyle(fontSize: 14), // Increase font size to 14
+                ),
+              ],
+            ),
           ),
           actions: [
-            TextButton(
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-              child: Text('Close'),
+            Center(
+              // Move the Close button to the center
+              child: TextButton(
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+                child: Text('Thanks!', style: TextStyle(fontSize: 14)), // Increase font size to 14
+              ),
             ),
           ],
+          backgroundColor: Colors.white,
         );
       },
     );
   }
 
-void showAddDeviceNotification() {
+  void showAddDeviceNotification() {
     showDialog(
       context: context,
       builder: (context) {
@@ -74,7 +99,7 @@ void showAddDeviceNotification() {
       },
     );
   }
-  
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -92,8 +117,17 @@ void showAddDeviceNotification() {
         leading: PlusButton(
           onPressed: () {
             showAddDeviceNotification();
-          }, // Show the notification when the plus button is pressed.
+          },
         ),
+        actions: [
+          Padding(
+            padding: const EdgeInsets.only(right: 16.0),
+            child: CircleAvatar(
+              backgroundImage: NetworkImage(profilePictureUrl),
+              radius: 20,
+            ),
+          ),
+        ],
       ),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 16.0),
@@ -101,92 +135,102 @@ void showAddDeviceNotification() {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              widget.selectedGoal.isNotEmpty // Use widget.selectedGoal here
-                  ? ElevatedButton(
-                      onPressed: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => GoalsScreen(
-                              onConfirmationChanged: updateGoalConfirmation,
-                              selectedGoal: widget.selectedGoal, // Pass the selectedGoal to GoalsScreen
+              SizedBox(
+                width: 300, // Widen the Your Goals button
+                child: widget.selectedGoal.isNotEmpty
+                    ? ElevatedButton(
+                        onPressed: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => GoalsScreen(
+                                onConfirmationChanged: updateGoalConfirmation,
+                                selectedGoal: widget.selectedGoal,
+                              ),
                             ),
-                          ),
-                        );
-                      },
-                      child: Column(
-                        children: [
-                          SizedBox(
-                            width: 120,
-                            height: 120,
-                            child: Image.asset(
-                              'assets/images/target.png',
-                              fit: BoxFit.cover,
+                          );
+                        },
+                        child: Column(
+                          children: [
+                            SizedBox(
+                              width: 200, // Adjust the width of the image
+                              height: 200, // Adjust the height of the image
+                              child: Image.asset(
+                                'assets/images/target.png',
+                                fit: BoxFit.cover,
+                              ),
                             ),
+                            const SizedBox(height: 8),
+                            Text(
+                              'Your Goals: (${widget.selectedGoal})',
+                              style: const TextStyle(fontSize: 24),
+                            ),
+                          ],
+                        ),
+                        style: ElevatedButton.styleFrom(
+                          primary: Color(0xFF7C8D9A), // Set the Your Goals button color
+                          onPrimary: Colors.white,
+                          padding:
+                              const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10),
                           ),
-                          const SizedBox(height: 8),
-                          Text(
-                            'Your Goals: (${widget.selectedGoal})', // Use widget.selectedGoal here
-                            style: const TextStyle(fontSize: 24),
-                          ),
-                        ],
+                        ),
+                      )
+                    : GoalsButton(
+                        onPressed: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => GoalsScreen(
+                                onConfirmationChanged: updateGoalConfirmation,
+                                selectedGoal: widget.selectedGoal,
+                              ),
+                            ),
+                          );
+                        },
                       ),
-                      style: ElevatedButton.styleFrom(
-                        primary: Colors.amberAccent,
-                        onPrimary: Colors.white,
-                        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(10),
+              ),
+              const SizedBox(height: 16),
+              SizedBox(
+                width: 300, // Widen the Your Water Usage button
+                child: ElevatedButton(
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) =>
+                            YourWaterUsageScreen(selectedGoal: widget.selectedGoal),
+                      ),
+                    );
+                  },
+                  child: Column(
+                    children: [
+                      SizedBox(
+                        width: 200, // Adjust the width of the image
+                        height: 200, // Adjust the height of the image
+                        child: Image.asset(
+                          'assets/images/shower.png',
+                          fit: BoxFit.cover,
                         ),
                       ),
-                    )
-                  : GoalsButton(
-                      onPressed: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => GoalsScreen(
-                              onConfirmationChanged: updateGoalConfirmation,
-                              selectedGoal: widget.selectedGoal, // Pass the selectedGoal to GoalsScreen
-                            ),
-                          ),
-                        );
-                      },
-                    ),
-              const SizedBox(height: 16),
-              ElevatedButton(
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) =>
-                          YourWaterUsageScreen(selectedGoal: widget.selectedGoal), // Pass the selectedGoal to YourWaterUsageScreen
-                    ),
-                  );
-                },
-                child: Column(
-                  children: [
-                    SizedBox(
-                      width: 120,
-                      height: 120,
-                      child: Image.asset(
-                        'assets/images/shower.png',
-                        fit: BoxFit.cover,
+                      SizedBox(
+                        height: 50,
+                        width: 60,
                       ),
+                      const Text(
+                        'Your Water Usage',
+                        style: TextStyle(fontSize: 24),
+                      ),
+                    ],
+                  ),
+                  style: ElevatedButton.styleFrom(
+                    primary: Color(0xFF2C3D4D), // Set the Your Water Usage button color
+                    onPrimary: Colors.white,
+                    padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10),
                     ),
-                    const SizedBox(height: 8),
-                    const Text(
-                      'Your Water Usage',
-                      style: TextStyle(fontSize: 24),
-                    ),
-                  ],
-                ),
-                style: ElevatedButton.styleFrom(
-                  primary: Colors.blue,
-                  onPrimary: Colors.white,
-                  padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(10),
                   ),
                 ),
               ),
@@ -195,15 +239,15 @@ void showAddDeviceNotification() {
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: startTutorial, // Call the function to show the tutorial dialog
-        child: Icon(Icons.help_outline), // Replace with your desired icon for the "?"
-        tooltip: 'Show Tutorial', // Tooltip message for the button
+        onPressed: startTutorial,
+        child: Icon(Icons.help_outline, color: Colors.grey),
+        tooltip: 'Show Tutorial',
+        backgroundColor: Colors.white,
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
     );
   }
 }
-
 
 class GoalsButton extends StatelessWidget {
   final VoidCallback onPressed;
@@ -217,8 +261,8 @@ class GoalsButton extends StatelessWidget {
       child: Column(
         children: [
           SizedBox(
-            width: 120,
-            height: 120,
+            width: 200, // Adjust the width of the image
+            height: 200, // Adjust the height of the image
             child: Image.asset(
               'assets/images/target.png',
               fit: BoxFit.cover,
@@ -226,13 +270,13 @@ class GoalsButton extends StatelessWidget {
           ),
           const SizedBox(height: 8),
           const Text(
-            'Go to Goals Screen',
+            'Your Goals',
             style: TextStyle(fontSize: 24),
           ),
         ],
       ),
       style: ElevatedButton.styleFrom(
-        primary: Colors.amberAccent,
+        primary: Color(0xFF7C8D9A), // Set the Your Goals button color
         onPrimary: Colors.white,
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
         shape: RoundedRectangleBorder(
@@ -256,4 +300,3 @@ class PlusButton extends StatelessWidget {
     );
   }
 }
-
