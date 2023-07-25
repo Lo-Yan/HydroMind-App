@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'home_screen.dart';
 import 'bottom_nav_bar.dart';
+import 'globals.dart';
 
 class ChooseUserScreen extends StatelessWidget {
   void navigateToHomeScreen(BuildContext context) {
@@ -10,12 +11,18 @@ class ChooseUserScreen extends StatelessWidget {
     );
   }
 
+  void onTapUserAvatar(BuildContext context, String username) {
+    Globals.selectedUsername = username; // Update the selectedUsername globally
+    print('Selected Username: ${Globals.selectedUsername}');
+    navigateToHomeScreen(context);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          "Who's Using ?",
+          "Who's Using?",
           style: TextStyle(fontSize: 24, color: Colors.white),
         ),
         backgroundColor: Colors.black,
@@ -28,9 +35,7 @@ class ChooseUserScreen extends StatelessWidget {
           children: [
             GestureDetector(
               onTap: () {
-                // Handle icon 1 click here
-                print("user1_avatar clicked");
-                navigateToHomeScreen(context);
+                onTapUserAvatar(context, "Jane Foo"); // Call the function with the selected username
               },
               child: Column(
                 children: [
@@ -48,8 +53,7 @@ class ChooseUserScreen extends StatelessWidget {
             ),
             GestureDetector(
               onTap: () {
-                print("user2_avatar clicked");
-                navigateToHomeScreen(context);
+                onTapUserAvatar(context, "John Foo"); // Call the function with the selected username
               },
               child: Column(
                 children: [
@@ -67,9 +71,7 @@ class ChooseUserScreen extends StatelessWidget {
             ),
             GestureDetector(
               onTap: () {
-                // Handle icon 3 click here
-                print("user3_avatar clicked");
-                navigateToHomeScreen(context);
+                onTapUserAvatar(context, "Jerry Foo"); // Call the function with the selected username
               },
               child: Column(
                 children: [

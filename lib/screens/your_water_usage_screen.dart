@@ -60,11 +60,13 @@ class _YourWaterUsageScreenState extends State<YourWaterUsageScreen> {
 Widget build(BuildContext context) {
   return Scaffold(
     appBar: AppBar(
-      backgroundColor: Colors.blue, // Set a background color for the app bar
+      backgroundColor: Colors.black, // Set a background color for the app bar
       title: const Text(
-        'Your Water Usage Screen',
+        'Your Water Usage',
         style: TextStyle(color: Colors.white),
       ),
+      centerTitle: true,
+      iconTheme: IconThemeData(color: Colors.white),
       bottom: PreferredSize(
         preferredSize: const Size.fromHeight(48),
         child: Row(
@@ -79,10 +81,10 @@ Widget build(BuildContext context) {
                   child: Opacity(
                     opacity: _selectedIndex == 0 ? 1.0 : 0.5, // Set the opacity here
                     child: Container(
-                      color: _selectedIndex == 0 ? Colors.blue : Colors.transparent,
+                      color: _selectedIndex == 0 ? Colors.grey : Colors.transparent,
                       child: const Center(
                         child: Text(
-                          'Days',
+                          'Weeks',
                           style: TextStyle(
                             color: Colors.white,
                             fontSize: 16,
@@ -106,7 +108,7 @@ Widget build(BuildContext context) {
                   child: Opacity(
                     opacity: _selectedIndex == 1 ? 1.0 : 0.5, // Set the opacity here
                     child: Container(
-                      color: _selectedIndex == 1 ? Colors.blue : Colors.transparent,
+                      color: _selectedIndex == 1 ? Colors.grey : Colors.transparent,
                       child: const Center(
                         child: Text(
                           'Months',
