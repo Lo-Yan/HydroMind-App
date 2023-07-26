@@ -1,7 +1,3 @@
-/*
-this is the introduction screen with hydromind logo when the user first opens the app
-*/
-
 import 'package:flutter/material.dart';
 import 'login_screen.dart';
 

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'goals_screen.dart';
 import 'your_water_usage_screen.dart';
 import 'globals.dart';
+
 class HomeScreen extends StatefulWidget {
   final String selectedGoal;
 
