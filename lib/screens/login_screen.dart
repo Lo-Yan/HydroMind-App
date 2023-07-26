@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:lottie/lottie.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'onboarding_screen.dart';
 
@@ -138,7 +137,7 @@ Widget build(BuildContext context) {
                         ),
                         IconButton(
                             onPressed: click2,
-                            icon: const Icon(FontAwesomeIcons.google,color: Colors.redAccent,)
+                            icon: const Icon(FontAwesomeIcons.google,color: Colors.blue,)
                         ),
                         IconButton(
                             onPressed: click2,

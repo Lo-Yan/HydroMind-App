@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'home_screen.dart';
 import 'bottom_nav_bar.dart';
 import 'globals.dart';
 

@@ -96,8 +96,9 @@ class GoalsScreen extends StatelessWidget {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () => startTutorial(context),
-        child: Icon(Icons.help_outline),
+        child: Icon(Icons.help_outline, color: Colors.grey),
         tooltip: 'Show Tutorial',
+        backgroundColor: Colors.white,
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
     );

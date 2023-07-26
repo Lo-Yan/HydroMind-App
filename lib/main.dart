@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'screens/intro_screen.dart';
-import 'screens/choose_user_screen.dart';
 import 'screens/mqtt-service/mqtt_server_test.dart';
 
 void main() {
