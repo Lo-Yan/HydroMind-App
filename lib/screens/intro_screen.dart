@@ -3,8 +3,7 @@ this is the introduction screen with hydromind logo when the user first opens th
 */
 
 import 'package:flutter/material.dart';
-import 'home_screen.dart';
-import 'onboarding_screen.dart';
+import 'login_screen.dart';
 
 class IntroScreen extends StatefulWidget {
   const IntroScreen({Key? key}) : super(key: key);
@@ -37,7 +36,7 @@ class _IntroScreenState extends State<IntroScreen> with SingleTickerProviderStat
         Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (context) => const OnboardingScreen(),
+            builder: (context) => LoginScreen(),
           ),
         );
       }
