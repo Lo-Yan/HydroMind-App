@@ -92,23 +92,28 @@ class LoginScreen extends StatelessWidget {
                         ),
                       ),
                     ),
-                    Padding(
-                      padding: const EdgeInsets.fromLTRB(20, 0, 30, 0),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.end,
-                        children: [
-                          TextButton(
-                            onPressed: click2,
-                            child: const Text(
-                              "Forget Password",
-                              style: TextStyle(
-                                color: Colors.blue,
-                              ),
+              Padding(
+                padding: const EdgeInsets.fromLTRB(20, 0, 30, 0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    Expanded(
+                      child: Align(
+                        alignment: Alignment.center,
+                        child: TextButton(
+                          onPressed: click2,
+                          child: const Text(
+                            "Forget Password",
+                            style: TextStyle(
+                              color: Colors.blue,
                             ),
-                          )
-                        ],
+                          ),
+                        ),
                       ),
                     ),
+                  ],
+                ),
+              ),
                     GestureDetector(
                       onTap: () => navigateToOnboardingScreen(context),
                       child: Container(
