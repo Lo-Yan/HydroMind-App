@@ -19,10 +19,12 @@ class _YourWaterUsageScreenState extends State<YourWaterUsageScreen> {
     ..sort((a, b) => b.compareTo(a)); // Generate random numbers and sort them in descending order
   final List<String> weekdays = ['Mon', 'Tue', 'Wed', 'Thurs', 'Fri', 'Sat', 'Sun'];
   final List<String> months = ['Apr', 'May', 'Jun', 'Jul'];
+
   // Linear regression model
   double predictNextDayConsumption(List<int> data) {
     double average = calculateAverage(data);
-    return average * getMultiplier(); // Use getMultiplier() function to get the correct multiplier.
+    double result = average * getMultiplier();
+    return double.parse(result.toStringAsFixed(1)); // Display result with one decimal points
   }
 
   double calculateAverage(List<int> data) {
@@ -48,6 +50,22 @@ class _YourWaterUsageScreenState extends State<YourWaterUsageScreen> {
     int firstMonthUsage = data[1]; // Second month usage
     int secondMonthUsage = data[2]; // Third month usage
     return firstMonthUsage - secondMonthUsage;
+  }
+
+  // New method to calculate the amount of money saved in the middle two months
+  double calculateMoneySavedLastMonth(int waterSaved) {
+    return (waterSaved / 1000) * 3.70;
+  }
+
+  // Calculate the "Lifetime Water Savings" based on the data displayed under "Months" button
+  int calculateLifetimeWaterSavings(double averageMonthlyConsumption) {
+    return (averageMonthlyConsumption * 12).toInt(); // Assuming 12 months in a year for simplicity
+  }
+
+  // New method to calculate the "Lifetime Money Savings" based on the data displayed under "Months" button
+  double calculateLifetimeMoneySavings(double lifetimeWaterSavings) {
+    double savings = (lifetimeWaterSavings / 1000) * 3.70;
+    return double.parse(savings.toStringAsFixed(2)); // Format to 2 decimal points
   }
 
   void _onNavItemTapped(int index) {
@@ -156,6 +174,43 @@ Widget build(BuildContext context) {
                     '${predictNextDayConsumption(waterUsageDays).toStringAsFixed(1)} liters',
                     style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold, color: Colors.red),
                   ),
+                  const SizedBox(height: 16), // Add some spacing
+                  // New Widget to display the "Lifetime Water Savings"
+                        Text(
+                          'Lifetime Water Savings',
+                          style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                        ),
+                        RichText(
+                          text: TextSpan(
+                            style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+                            children: [
+                              TextSpan(
+                                text: '${calculateLifetimeWaterSavings((waterUsageMonths.take(3).reduce((sum, value) => sum + value) / 3).toDouble())}',
+                                style: const TextStyle(color: Colors.purple), // Set the color to purple
+                              ),
+                              const TextSpan(
+                                text: ' liters',
+                                style: TextStyle(color: Colors.purple), // Set the word "liters" in purple color
+                              ),
+                            ],
+                          ),
+                        ),
+                        const SizedBox(height: 16), // Add some spacing
+                        // New Widget to display the "Lifetime Money Savings"
+                        Text(
+                          'Lifetime Money Savings',
+                          style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                        ),
+                        RichText(
+                          text: TextSpan(
+                            style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+                            children: [
+                              TextSpan(
+                                text: '\$${calculateLifetimeMoneySavings(calculateLifetimeWaterSavings(waterUsageMonths.take(3).reduce((sum, value) => sum + value) / 3).toDouble())}',                                style: const TextStyle(color: Colors.green), // Set the color to green
+                              ),
+                            ],
+                          ),
+                        ),
                 ],
               ),
             ),
@@ -213,6 +268,60 @@ Widget build(BuildContext context) {
                               const TextSpan(
                                 text: ' liters',
                                 style: TextStyle(color: Colors.green), // Set the word "liters" in green color
+                              ),
+                            ],
+                          ),
+                        ),
+                        const SizedBox(height: 16), // Add some spacing
+                                                // Display the Amount of Money Saved Last Month
+                        const Text(
+                          'Amount of Money Saved Last Month',
+                          style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                        ),
+                        RichText(
+                          text: TextSpan(
+                            style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+                            children: [
+                              TextSpan(
+                                text: '\$${calculateMoneySavedLastMonth(calculateWaterSavedLastMonth(waterUsageMonths)).toStringAsFixed(2)}',
+                                style: const TextStyle(color: Colors.green),
+                              ),
+                            ],
+                          ),
+                        ),
+                        const SizedBox(height: 16), // Add some spacing
+                        // New Widget to display the "Lifetime Water Savings" for Months
+                        Text(
+                          'Lifetime Water Savings',
+                          style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                        ),
+                        RichText(
+                          text: TextSpan(
+                            style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+                            children: [
+                              TextSpan(
+                                text: '${calculateLifetimeWaterSavings((waterUsageMonths.take(3).reduce((sum, value) => sum + value) / 3).toDouble())}',
+                                style: const TextStyle(color: Colors.purple), // Set the color to purple
+                              ),
+                              const TextSpan(
+                                text: ' liters',
+                                style: TextStyle(color: Colors.purple), // Set the word "liters" in purple color
+                              ),
+                            ],
+                          ),
+                        ),
+                        const SizedBox(height: 16), // Add some spacing
+                        // New Widget to display the "Lifetime Money Savings" for Months
+                        Text(
+                          'Lifetime Money Savings',
+                          style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                        ),
+                        RichText(
+                          text: TextSpan(
+                            style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+                            children: [
+                              TextSpan(
+                                text: '\$${calculateLifetimeMoneySavings(calculateLifetimeWaterSavings(waterUsageMonths.take(3).reduce((sum, value) => sum + value) / 3).toDouble())}',                                style: const TextStyle(color: Colors.green), // Set the color to green
                               ),
                             ],
                           ),
