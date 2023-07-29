@@ -57,6 +57,24 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
     );
   }
 
+ElevatedButton _buildSkipButton() {
+  return ElevatedButton(
+    onPressed: skipOnboarding,
+    style: ElevatedButton.styleFrom(
+      primary: Colors.black,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(50),
+      ),
+      elevation: 0,
+      padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 25), // Adjust the padding
+    ),
+    child: const Text(
+      "SKIP", // Add the text to be displayed on the button
+      style: TextStyle(color: Colors.white, fontSize: 19.5), // Increase font size by 2.0
+    ),
+  );
+}
+
   @override
   Widget build(BuildContext context) {
     SizeConfig().init(context);
@@ -131,9 +149,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                                   borderRadius: BorderRadius.circular(50),
                                 ),
                                 elevation: 0,
-                                padding: (width <= 550)
-                                    ? const EdgeInsets.symmetric(horizontal: 100, vertical: 20)
-                                    : EdgeInsets.symmetric(horizontal: width * 0.2, vertical: 25),
+                                padding: const EdgeInsets.symmetric(horizontal: 100, vertical: 20),
                               ),
                             ),
                           )
@@ -142,20 +158,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
-                                TextButton(
-                                  onPressed: skipOnboarding,
-                                  child: const Text(
-                                    "SKIP",
-                                    style: TextStyle(color: Colors.black, fontSize: 8.5), // Increase font size by 2.0
-                                  ),
-                                  style: TextButton.styleFrom(
-                                    elevation: 0,
-                                    textStyle: TextStyle(
-                                      fontWeight: FontWeight.w600,
-                                      fontSize: (width <= 550) ? 6.5 : 8.5,
-                                    ),
-                                  ),
-                                ),
+                                _buildSkipButton(), // Use the same style as the "Next" button
                                 ElevatedButton(
                                   onPressed: () {
                                     _controller.nextPage(
@@ -173,9 +176,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                                       borderRadius: BorderRadius.circular(50),
                                     ),
                                     elevation: 0,
-                                    padding: (width <= 550)
-                                        ? const EdgeInsets.symmetric(horizontal: 30, vertical: 20)
-                                        : const EdgeInsets.symmetric(horizontal: 30, vertical: 25),
+                                    padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 25),
                                   ),
                                 ),
                               ],
