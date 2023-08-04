@@ -9,7 +9,7 @@ For green, the user may continue showering.
 For yellow, users should complete their shower within the next minute. 
 For red, it is recommended that they stop showering.
 
-###Supervised Machine Learning Algorithm
+### Supervised Machine Learning Algorithm
 The algorithm will be fed with daily water usage as training data. From the training stage, the system can make personalised recommendations for efficient showering.
 The cloud server utilises the computational power and resources provided by the cloud environment to perform advanced analysis and modelling on the data.
 
