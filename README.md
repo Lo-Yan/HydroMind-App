@@ -4,7 +4,7 @@
 As a resource-deficient country with a growing population, innovative solutions are needed for water sustainability in Singapore. According to PUB, up to 45% of water consumption is attributed to domestic use, with showering being the largest contributor within households. To address this, our solution focuses on promoting behavioral changes among the population to achieve significant water conservation. We propose to install water flow sensors and ESP32 microcontrollers onto shower hoses to collect data on water consumption. By utilizing supervised learning, this data will be translated into a visual representation using a RGB LED light, encouraging users to reduce their water usage. Furthermore, a personalized mobile application, HydroMind, will be developed to provide users with information on the amount of water saved, cost savings, and time required to meet the water-saving objectives. In short, Hydromind aims to empower each and every individual to play a proactive role in conserving water.
 
 ## Features
-### 3 Different LED Coloured Lights. 
+### 3 Different LED Coloured Lights 
 For green, the user may continue showering. 
 For yellow, users should complete their shower within the next minute. 
 For red, it is recommended that they stop showering.
