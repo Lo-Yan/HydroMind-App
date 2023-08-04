@@ -168,7 +168,7 @@ Widget build(BuildContext context) {
                   const SizedBox(height: 16), // Add some spacing
                   const Text(
                     'Recommended Water Usage for Next Day',
-                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.red),
+                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.red),
                   ),
                   Text(
                     '${predictNextDayConsumption(waterUsageDays).toStringAsFixed(1)} liters',
@@ -478,7 +478,7 @@ class _WaterUsageBarChartAnimatedState extends State<WaterUsageBarChartAnimated>
                 leftTitles: SideTitles(
                   showTitles: true,
                   margin: 16, // Adjust the margin for leftTitles
-                  reservedSize: 40, // Adjust the reservedSize for leftTitles
+                  reservedSize: 60, // Adjust the reservedSize for leftTitles
                   getTitles: (value) {
                     return value.toInt().toString();
                   },
@@ -486,7 +486,7 @@ class _WaterUsageBarChartAnimatedState extends State<WaterUsageBarChartAnimated>
                 topTitles: SideTitles(showTitles: false),
                 rightTitles: SideTitles(
                   showTitles: true,
-                  reservedSize: 40,
+                  reservedSize: 60,
                   getTitles: (value) {
                     return ''; // Remove the word "liters" from y-axis labels
                   },
