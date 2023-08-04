@@ -1,4 +1,4 @@
-# hydromind
+# HydroMind
 
 A new Flutter project.
 
